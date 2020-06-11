@@ -4,7 +4,7 @@
 
     <groupId>io.github.drewctaylor</groupId>
     <artifactId>javapoet-maven-plugin</artifactId>
-    <version>1.0.2-SNAPSHOT</version>
+    <version>1.0.2</version>
     <packaging>maven-plugin</packaging>
 
     <prerequisites>

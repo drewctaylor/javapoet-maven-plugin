@@ -94,7 +94,7 @@ To configure maven to use the plugin:
     <plugin>
         <groupId>io.github.drewctaylor</groupId>
         <artifactId>javapoet-maven-plugin</artifactId>
-        <version>1.0.2-SNAPSHOT</version>
+        <version>1.0.2</version>
         <configuration>
             <methods>
                 <your.name.JavaFileFactory1.javaFileIterable>ClassName1</your.name.JavaFileFactory1.javaFileIterable>
