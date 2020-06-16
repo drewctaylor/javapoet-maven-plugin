@@ -1,4 +1,4 @@
-package javapoet.maven.plugin;
+package io.github.drewctaylor.maven.plugin.javapoet;
 
 import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.TypeSpec;
@@ -16,7 +16,7 @@ import java.util.HashMap;
 
 import static fj.P.p;
 import static fj.data.HashMap.arrayHashMap;
-import static javapoet.maven.plugin.JavaPoetMojo.executeHelper;
+import static io.github.drewctaylor.maven.plugin.javapoet.JavaPoetMojo.executeHelper;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -38,7 +38,7 @@ public final class JavaPoetMojoTest
                 final String name)
         {
             return Collections.singletonList(JavaFile.builder(
-                    "javapoet.maven.plugin",
+                    "io.github.drewctaylor.maven.plugin.javapoet",
                     TypeSpec.classBuilder(
                             name)
                             .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
@@ -89,18 +89,18 @@ public final class JavaPoetMojoTest
 
         assertEquals(
                 Validation.<Class<?>, List<Unit>>fail(NoSuchMethodException.class),
-                executeHelper(pathForTestClasses, arrayHashMap(p("javapoet.maven.plugin.JavaPoetMojoTest$JavaFileFactory.methodName", "")).toMap()).f().map(NonEmptyList::head).f().map(Object::getClass));
+                executeHelper(pathForTestClasses, arrayHashMap(p("io.github.drewctaylor.maven.plugin.javapoet.JavaPoetMojoTest$JavaFileFactory.methodName", "")).toMap()).f().map(NonEmptyList::head).f().map(Object::getClass));
 
         assertEquals(
                 Validation.<Class<?>, List<Unit>>fail(NoSuchMethodException.class),
-                executeHelper(pathForTestClasses, arrayHashMap(p("javapoet.maven.plugin.JavaPoetMojoTest$JavaFileFactory.javaFileListWithoutParameter", "")).toMap()).f().map(NonEmptyList::head).f().map(Object::getClass));
+                executeHelper(pathForTestClasses, arrayHashMap(p("io.github.drewctaylor.maven.plugin.javapoet.JavaPoetMojoTest$JavaFileFactory.javaFileListWithoutParameter", "")).toMap()).f().map(NonEmptyList::head).f().map(Object::getClass));
 
         assertEquals(
                 Validation.<Class<?>, List<Unit>>fail(InvocationTargetException.class),
-                executeHelper(pathForTestClasses, arrayHashMap(p("javapoet.maven.plugin.JavaPoetMojoTest$JavaFileFactory.javaFileListWithParameter", "")).toMap()).f().map(NonEmptyList::head).f().map(Object::getClass));
+                executeHelper(pathForTestClasses, arrayHashMap(p("io.github.drewctaylor.maven.plugin.javapoet.JavaPoetMojoTest$JavaFileFactory.javaFileListWithParameter", "")).toMap()).f().map(NonEmptyList::head).f().map(Object::getClass));
 
-        executeHelper(pathForTestClasses, arrayHashMap(p("javapoet.maven.plugin.JavaPoetMojoTest$JavaFileFactory.javaFileListWithParameter", "TestClass")).toMap());
+        executeHelper(pathForTestClasses, arrayHashMap(p("io.github.drewctaylor.maven.plugin.javapoet.JavaPoetMojoTest$JavaFileFactory.javaFileListWithParameter", "TestClass")).toMap());
 
-        assertTrue(Paths.get(pathForTestClasses, "javapoet", "maven", "plugin", "TestClass.java").toFile().isFile());
+        assertTrue(Paths.get(pathForTestClasses, "io", "github", "drewctaylor", "maven", "plugin", "javapoet", "TestClass.java").toFile().isFile());
     }
 }

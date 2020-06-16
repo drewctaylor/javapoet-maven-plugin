@@ -1,4 +1,4 @@
-package javapoet.maven.plugin;
+package io.github.drewctaylor.maven.plugin.javapoet;
 
 import com.squareup.javapoet.JavaFile;
 import fj.F2;

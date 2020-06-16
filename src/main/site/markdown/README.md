@@ -34,7 +34,7 @@ public final class JavaFileFactory1 {
     public static Iterable<JavaFile> javaFileIterable(final String name)
     {
         return singletonList(JavaFile.builder(
-                "javapoet.maven.plugin",
+                "your.name",
                 TypeSpec.classBuilder(
                         name)
                         .addModifiers(PUBLIC, FINAL)
