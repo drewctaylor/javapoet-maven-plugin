@@ -8,11 +8,12 @@ import fj.data.NonEmptyList;
 import fj.data.Validation;
 import org.junit.jupiter.api.Test;
 
-import javax.lang.model.element.Modifier;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.HashMap;
+
+import javax.lang.model.element.Modifier;
 
 import static fj.P.p;
 import static fj.data.HashMap.arrayHashMap;

@@ -112,7 +112,7 @@ public final class JavaPoetMojo extends AbstractMojo
      * Associates fully-qualified method names with string parameters.
      */
     @Parameter(alias = "methods", required = true)
-    private Map<String, String> classNameMethodNameParameterMap;
+    private Map<String, String> methods;
 
     /**
      * Invokes the given methods with the given parameters; writes the returned JavaFile Stream to the given directory.
@@ -120,7 +120,7 @@ public final class JavaPoetMojo extends AbstractMojo
     @Override
     public void execute()
     {
-        executeHelper(path, classNameMethodNameParameterMap)
+        executeHelper(path, methods)
                 .f().forEach(nel -> nel.forEach(exception -> getLog().error(exception)));
     }
 }

@@ -1,5 +1,6 @@
 [![Workflow Maven Package](https://github.com/drewctaylor/javapoet-maven-plugin/workflows/workflow-maven-package/badge.svg)](https://github.com/drewctaylor/javapoet-maven-plugin/workflows/workflow-maven-package/badge.svg)
-[![Code Coverage](https://codecov.io/gh/drewctaylor/javapoet-maven-plugin/branch/master/graph/badge.svg)](https://codecov.io/gh/drewctaylor/javapoet-maven-plugin)
+[![Workflow Maven Deploy](https://github.com/drewctaylor/javapoet-maven-plugin/workflows/workflow-maven-deploy/badge.svg)](https://github.com/drewctaylor/javapoet-maven-plugin/workflows/workflow-maven-deploy/badge.svg)
+[![Code Coverage](https://codecov.io/gh/drewctaylor/javapoet-maven-plugin/branch/trunk/graph/badge.svg)](https://codecov.io/gh/drewctaylor/javapoet-maven-plugin)
 
 # JavaPoet Maven Plugin
 
@@ -48,7 +49,7 @@ Then, package the method as a maven dependency.
 
 ## To Configure the Plugin
 
-To configure maven to use the plugin:
+To configure Maven to use the plugin:
 
 1) Update your `~/.m2/settings.xml` to include your github username or github email address and your [github personal access token](https://help.github.com/en/github/authenticating-to-github/creating-a-personal-access-token-for-the-command-line).
 
@@ -58,7 +59,7 @@ To configure maven to use the plugin:
     <settings>
         <servers>
             <server>
-                <id>github</id>
+                <id>javapoet-maven-plugin</id>
                 <username>your-github-username-or-email-address</username>
                 <password>your-github-personal-access-token</password>
             </server>
@@ -73,7 +74,7 @@ To configure maven to use the plugin:
     ```xml
     <pluginRepositories>
         <pluginRepository>
-            <id>github</id>
+            <id>javapoet-maven-plugin</id>
             <name>GitHub Packages</name>
             <url>https://maven.pkg.github.com/drewctaylor/javapoet-maven-plugin</url>
         </pluginRepository>
@@ -94,7 +95,7 @@ To configure maven to use the plugin:
     <plugin>
         <groupId>io.github.drewctaylor</groupId>
         <artifactId>javapoet-maven-plugin</artifactId>
-        <version>1.0.3</version>
+        <version>1.0.4-SNAPSHOT</version>
         <configuration>
             <methods>
                 <your.name.JavaFileFactory1.javaFileIterable>ClassName1</your.name.JavaFileFactory1.javaFileIterable>

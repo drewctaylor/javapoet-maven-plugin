@@ -1,5 +1,6 @@
-[![Workflow Maven Package](https://github.com/drewctaylor/javapoet-maven-plugin/workflows/workflow-maven-package/badge.svg)](https://github.com/drewctaylor/javapoet-maven-plugin/workflows/workflow-maven-package/badge.svg)
-[![Code Coverage](https://codecov.io/gh/drewctaylor/javapoet-maven-plugin/branch/master/graph/badge.svg)](https://codecov.io/gh/drewctaylor/javapoet-maven-plugin)
+[![Workflow Maven Package](https://github.com/drewctaylor/${project.artifactId}/workflows/workflow-maven-package/badge.svg)](https://github.com/drewctaylor/${project.artifactId}/workflows/workflow-maven-package/badge.svg)
+[![Workflow Maven Deploy](https://github.com/drewctaylor/${project.artifactId}/workflows/workflow-maven-deploy/badge.svg)](https://github.com/drewctaylor/${project.artifactId}/workflows/workflow-maven-deploy/badge.svg)
+[![Code Coverage](https://codecov.io/gh/drewctaylor/${project.artifactId}/branch/trunk/graph/badge.svg)](https://codecov.io/gh/drewctaylor/${project.artifactId})
 
 # JavaPoet Maven Plugin
 
@@ -48,7 +49,7 @@ Then, package the method as a maven dependency.
 
 ## To Configure the Plugin
 
-To configure maven to use the plugin:
+To configure Maven to use the plugin:
 
 1) Update your `~/.m2/settings.xml` to include your github username or github email address and your [github personal access token](https://help.github.com/en/github/authenticating-to-github/creating-a-personal-access-token-for-the-command-line).
 
@@ -58,7 +59,7 @@ To configure maven to use the plugin:
     <settings>
         <servers>
             <server>
-                <id>github</id>
+                <id>${project.artifactId}</id>
                 <username>your-github-username-or-email-address</username>
                 <password>your-github-personal-access-token</password>
             </server>
@@ -73,9 +74,9 @@ To configure maven to use the plugin:
     ```xml
     <pluginRepositories>
         <pluginRepository>
-            <id>github</id>
+            <id>${project.artifactId}</id>
             <name>GitHub Packages</name>
-            <url>https://maven.pkg.github.com/drewctaylor/javapoet-maven-plugin</url>
+            <url>https://maven.pkg.github.com/drewctaylor/${project.artifactId}</url>
         </pluginRepository>
     </pluginRepositories>
     ```
@@ -92,8 +93,8 @@ To configure maven to use the plugin:
     
     ```xml
     <plugin>
-        <groupId>io.github.drewctaylor</groupId>
-        <artifactId>javapoet-maven-plugin</artifactId>
+        <groupId>${project.groupId}</groupId>
+        <artifactId>${project.artifactId}</artifactId>
         <version>${project.version}</version>
         <configuration>
             <methods>
