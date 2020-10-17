@@ -47,11 +47,9 @@ public final class JavaFileFactory1 {
 
 Then, package the method as a maven dependency.
 
-## To Configure the Plugin
+## To Use
 
-To configure Maven to use the plugin:
-
-1) Update your `~/.m2/settings.xml` to include your github username or github email address and your [github personal access token](https://help.github.com/en/github/authenticating-to-github/creating-a-personal-access-token-for-the-command-line).
+1) Update `~/.m2/settings.xml` to include a github username or github email address and a [github personal access token](https://help.github.com/en/github/authenticating-to-github/creating-a-personal-access-token-for-the-command-line).
 
     For example:
 
@@ -60,14 +58,14 @@ To configure Maven to use the plugin:
         <servers>
             <server>
                 <id>${project.artifactId}</id>
-                <username>your-github-username-or-email-address</username>
-                <password>your-github-personal-access-token</password>
+                <username>github-username-or-email-address</username>
+                <password>github-personal-access-token</password>
             </server>
         </servers>
     </settings>
     ```
 
-2) Update your `pom.xml` to include a reference to the plugin repository.
+2) Update `pom.xml` to include a reference to the plugin repository.
 
     For example:
 
@@ -81,7 +79,7 @@ To configure Maven to use the plugin:
     </pluginRepositories>
     ```
 
-3) Update your `pom.xml` to include the plugin. 
+3) Update `pom.xml` to include the plugin. 
 
     You must configure the plugin to specify
     

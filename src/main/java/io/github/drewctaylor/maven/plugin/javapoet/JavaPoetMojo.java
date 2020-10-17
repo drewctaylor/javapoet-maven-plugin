@@ -33,7 +33,7 @@ import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
 /**
- * Invokes the given methods with the given parameters; writes the returned JavaFile Stream to the given directory.
+ * Invoke the given methods with the given string parameters; write the returned JavaFile Stream to the given directory.
  */
 @Mojo(name = "generate-sources", defaultPhase = LifecyclePhase.GENERATE_SOURCES)
 public final class JavaPoetMojo extends AbstractMojo
@@ -62,11 +62,11 @@ public final class JavaPoetMojo extends AbstractMojo
     private static Validation<NonEmptyList<Exception>, List<JavaFile>> javaFileStreamListFor(
             final HashMap<String, String> classNameMethodNameParameterMap)
     {
-        final String regexForIdentifier = "[\\p{Alpha}_$][\\p{Alpha}\\p{Digit}_$]*";
-        final String regex = format("((%s)(\\.%s)*)\\.(%s)", regexForIdentifier, regexForIdentifier, regexForIdentifier);
-        final Pattern pattern = Pattern.compile(regex);
-        final int groupForClassName = 1;
-        final int groupForMethodName = 4;
+        final var regexForIdentifier = "[\\p{Alpha}_$][\\p{Alpha}\\p{Digit}_$]*";
+        final var regex = format("((%s)(\\.%s)*)\\.(%s)", regexForIdentifier, regexForIdentifier, regexForIdentifier);
+        final var pattern = Pattern.compile(regex);
+        final var groupForClassName = 1;
+        final var groupForMethodName = 4;
 
         final F2<Matcher, String, Validation<NonEmptyList<Exception>, P2<String, String>>> classNameMethodNameFor = (
                 matcher,
@@ -74,6 +74,7 @@ public final class JavaPoetMojo extends AbstractMojo
                         .iif(matcher.matches(), () -> p(matcher.group(groupForClassName), matcher.group(groupForMethodName)))
                         .toValidation(nel(new Exception(format("The plugin could not parse the method '%s'.", classNameMethodName))));
 
+        @SuppressWarnings("unchecked")
         final F3<String, String, String, Validation<NonEmptyList<Exception>, List<JavaFile>>> javaFileListFor = (
                 className,
                 methodName,
@@ -103,19 +104,23 @@ public final class JavaPoetMojo extends AbstractMojo
     }
 
     /**
-     * A directory.
+     * A path to which to write the java file.
      */
+    @SuppressWarnings(
+    { "unused", "InstanceVariableMayNotBeInitialized" })
     @Parameter(alias = "path", defaultValue = "${project.basedir}/src/main/java/")
     private String path;
 
     /**
-     * Associates fully-qualified method names with string parameters.
+     * A map from a fully-qualified method name to a string parameter.
      */
+    @SuppressWarnings(
+    { "unused", "InstanceVariableMayNotBeInitialized" })
     @Parameter(alias = "methods", required = true)
     private Map<String, String> methods;
 
     /**
-     * Invokes the given methods with the given parameters; writes the returned JavaFile Stream to the given directory.
+     * Invoke the given methods with the given string parameters; write the returned JavaFile Stream to the given directory.
      */
     @Override
     public void execute()
