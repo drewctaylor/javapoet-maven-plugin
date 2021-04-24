@@ -1,4 +1,3 @@
-[![Workflow Maven Package](https://github.com/drewctaylor/${project.artifactId}/workflows/workflow-maven-package/badge.svg)](https://github.com/drewctaylor/${project.artifactId}/workflows/workflow-maven-package/badge.svg)
 [![Workflow Maven Deploy](https://github.com/drewctaylor/${project.artifactId}/workflows/workflow-maven-deploy/badge.svg)](https://github.com/drewctaylor/${project.artifactId}/workflows/workflow-maven-deploy/badge.svg)
 [![Code Coverage](https://codecov.io/gh/drewctaylor/${project.artifactId}/branch/trunk/graph/badge.svg)](https://codecov.io/gh/drewctaylor/${project.artifactId})
 
@@ -49,32 +48,31 @@ Then, package the method as a maven dependency.
 
 ## To Use
 
-1) Update `~/.m2/settings.xml` to include a github username or github email address and a [github personal access token](https://help.github.com/en/github/authenticating-to-github/creating-a-personal-access-token-for-the-command-line).
-
-    For example:
-
-    ```xml
-    <settings>
-        <servers>
-            <server>
-                <id>${project.artifactId}</id>
-                <username>github-username-or-email-address</username>
-                <password>github-personal-access-token</password>
-            </server>
-        </servers>
-    </settings>
-    ```
-
-2) Update `pom.xml` to include a reference to the plugin repository.
+1) Update `pom.xml` to include a reference to the plugin repository.
 
     For example:
 
     ```xml
     <pluginRepositories>
         <pluginRepository>
-            <id>${project.artifactId}</id>
-            <name>GitHub Packages</name>
-            <url>https://maven.pkg.github.com/drewctaylor/${project.artifactId}</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
+        </pluginRepository>
+        <pluginRepository>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <id>ossrh-snapshot</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
         </pluginRepository>
     </pluginRepositories>
     ```
