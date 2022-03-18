@@ -1,6 +1,6 @@
 name: workflow-maven-deploy
 
-on: [push]
+on: [ push ]
 
 jobs:
   build:
@@ -17,12 +17,15 @@ jobs:
           server-id: ossrh
           server-username: SERVER_USERNAME
           server-password: SERVER_PASSWORD
+          gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
+          gpg-passphrase: GPG_PASSPHRASE
 
       - name: Step 3 - Maven Deploy.
         run: mvn -B deploy -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
         env:
           SERVER_USERNAME: ${{ secrets.OSSRH_USERNAME }}
           SERVER_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
+          GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
 
       - name: Step 4 - CodeCov.
         uses: codecov/codecov-action@v1
