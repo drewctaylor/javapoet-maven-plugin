@@ -1,0 +1,12 @@
+<ruleset>
+    <rules>
+        <rule groupId="*">
+            <ignoreVersions>
+                <ignoreVersion type="regex">.*\.alpha.*</ignoreVersion>
+                <ignoreVersion type="regex">.*\-alpha.*</ignoreVersion>
+                <ignoreVersion type="regex">.*\.beta.*</ignoreVersion>
+                <ignoreVersion type="regex">.*\-beta.*</ignoreVersion>
+            </ignoreVersions>
+        </rule>
+    </rules>
+</ruleset>

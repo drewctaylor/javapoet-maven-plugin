@@ -42,13 +42,11 @@ public final class JavaPoetMojo extends AbstractMojo
         final int groupForClassName = 1;
         final int groupForMethodName = 4;
 
-        return matcher.matches() ?
-                (
-                        fExceptionList,
-                        fClassNameMethodName) -> fClassNameMethodName.apply(matcher.group(groupForClassName), matcher.group(groupForMethodName)) :
-                (
-                        fExceptionList,
-                        fClassNameMethodName) -> fExceptionList.apply(singletonList(new Exception(format("The plugin could not parse the method '%s'.", classNameMethodName))));
+        return (
+                final Function<List<Exception>, T> fExceptionList,
+                final BiFunction<String, String, T> fClassNameMethodName) -> matcher.matches() ?
+                        fClassNameMethodName.apply(matcher.group(groupForClassName), matcher.group(groupForMethodName)) :
+                        fExceptionList.apply(singletonList(new Exception(format("The plugin could not parse the method '%s'.", classNameMethodName))));
     }
 
     private static <T> BiFunction<Function<List<Exception>, T>, Function<List<JavaFile>, T>, T> javaFileList(
@@ -60,14 +58,14 @@ public final class JavaPoetMojo extends AbstractMojo
         {
             final List<JavaFile> javaFileList = stream(((Iterable<JavaFile>) Class.forName(className).getMethod(methodName, String.class).invoke(null, parameter)).spliterator(), false).collect(toList());
             return (
-                    fExceptionList,
-                    fJavaFileIterable) -> fJavaFileIterable.apply(javaFileList);
+                    final Function<List<Exception>, T> fExceptionList,
+                    final Function<List<JavaFile>, T> fJavaFileIterable) -> fJavaFileIterable.apply(javaFileList);
         }
-        catch (final ClassNotFoundException | IllegalAccessException | InvocationTargetException | NoSuchMethodException exception)
+        catch (final ClassNotFoundException | NoSuchMethodException | InvocationTargetException | IllegalAccessException exception)
         {
             return (
-                    fExceptionList,
-                    fJavaFileList) -> fExceptionList.apply(singletonList(exception));
+                    final Function<List<Exception>, T> fExceptionList,
+                    final Function<List<JavaFile>, T> fJavaFileList) -> fExceptionList.apply(singletonList(exception));
         }
     }
 
@@ -76,17 +74,13 @@ public final class JavaPoetMojo extends AbstractMojo
     {
         final File file = Paths.get(path).toFile();
 
-        return file.isFile() ?
-                (
-                        fExceptionList,
-                        fFile) -> fExceptionList.apply(singletonList(new Exception(format("The path exists and references a file '%s'.", path)))) :
-                !file.exists() && !file.mkdirs() ?
-                        (
-                                fExceptionList,
-                                fFile) -> fExceptionList.apply(singletonList(new Exception(format("The plugin could not create the directory '%s'.", path)))) :
-                        (
-                                fExceptionList,
-                                fFile) -> fFile.apply(file);
+        return (
+                final Function<List<Exception>, T> fExceptionList,
+                final Function<File, T> fFile) -> file.isFile() ?
+                        fExceptionList.apply(singletonList(new Exception(format("The path exists and references a file '%s'.", path)))) :
+                        !file.exists() && !file.mkdirs() ?
+                                fExceptionList.apply(singletonList(new Exception(format("The plugin could not create the directory '%s'.", path)))) :
+                                fFile.apply(file);
     }
 
     private static <T> BiFunction<Function<List<Exception>, T>, Function<List<JavaFile>, T>, T> javaFileStreamListFor(
@@ -97,43 +91,53 @@ public final class JavaPoetMojo extends AbstractMojo
         final Pattern pattern = Pattern.compile(regex);
 
         return classNameMethodNameParameterMap.keySet().stream()
-                .map(classNameMethodName -> JavaPoetMojo.<BiFunction<Function<List<Exception>, T>, Function<List<JavaFile>, T>, T>>classNameMethodNameFor(pattern.matcher(classNameMethodName), classNameMethodName).apply(
-                        exceptionList -> (
-                                fExceptionList,
-                                fJavaFileList) -> fExceptionList.apply(exceptionList),
-                        (
-                                className,
-                                methodName) -> JavaPoetMojo.<BiFunction<Function<List<Exception>, T>, Function<List<JavaFile>, T>, T>>javaFileList(className, methodName, classNameMethodNameParameterMap.get(classNameMethodName)).apply(
-                                        exceptionList -> (
-                                                fExceptionList,
-                                                fJavaFileList) -> fExceptionList.apply(exceptionList),
-                                        javaFileList -> (
-                                                fExceptionList,
-                                                fJavaFileList) -> fJavaFileList.apply(javaFileList))))
+                .map((
+                        final String classNameMethodName) -> JavaPoetMojo.<BiFunction<Function<List<Exception>, T>, Function<List<JavaFile>, T>, T>>classNameMethodNameFor(pattern.matcher(classNameMethodName), classNameMethodName).apply(
+                                (
+                                        final List<Exception> exceptionList) -> (
+                                                final Function<List<Exception>, T> fExceptionList,
+                                                final Function<List<JavaFile>, T> fJavaFileList) -> fExceptionList.apply(exceptionList),
+                                (
+                                        final String className,
+                                        final String methodName) -> JavaPoetMojo.<BiFunction<Function<List<Exception>, T>, Function<List<JavaFile>, T>, T>>javaFileList(className, methodName, classNameMethodNameParameterMap.get(classNameMethodName)).apply(
+                                                (
+                                                        final List<Exception> exceptionList) -> (
+                                                                final Function<List<Exception>, T> fExceptionList,
+                                                                final Function<List<JavaFile>, T> fJavaFileList) -> fExceptionList.apply(exceptionList),
+                                                (
+                                                        final List<JavaFile> javaFileList) -> (
+                                                                final Function<List<Exception>, T> fExceptionList,
+                                                                final Function<List<JavaFile>, T> fJavaFileList) -> fJavaFileList.apply(javaFileList))))
                 .reduce(
                         (
-                                fExceptionList,
-                                fJavaFileList) -> fJavaFileList.apply(emptyList()),
+                                final Function<List<Exception>, T> fExceptionList,
+                                final Function<List<JavaFile>, T> fJavaFileList) -> fJavaFileList.apply(emptyList()),
                         (
-                                validation1,
-                                validation2) -> (
-                                        fExceptionList,
-                                        fJavaFileList) -> validation1.apply(
-                                                exceptionList -> validation2.apply(
-                                                        exceptionListInner -> fExceptionList.apply(concat(exceptionList.stream(), exceptionListInner.stream()).collect(toList())),
-                                                        javaFileListInner -> fExceptionList.apply(exceptionList)),
-                                                javaFileList -> validation2.apply(
-                                                        exceptionListInner -> fExceptionList.apply(exceptionListInner),
-                                                        javaFileListInner -> fJavaFileList.apply(concat(javaFileList.stream(), javaFileListInner.stream()).collect(toList())))));
+                                final BiFunction<Function<List<Exception>, T>, Function<List<JavaFile>, T>, T> validation1,
+                                final BiFunction<Function<List<Exception>, T>, Function<List<JavaFile>, T>, T> validation2) -> (
+                                        final Function<List<Exception>, T> fExceptionList,
+                                        final Function<List<JavaFile>, T> fJavaFileList) -> validation1.apply(
+                                                (
+                                                        final List<Exception> exceptionList) -> validation2.apply(
+                                                                (
+                                                                        final List<Exception> exceptionListInner) -> fExceptionList.apply(concat(exceptionList.stream(), exceptionListInner.stream()).collect(toList())),
+                                                                (
+                                                                        final List<JavaFile> javaFileListInner) -> fExceptionList.apply(exceptionList)),
+                                                (
+                                                        final List<JavaFile> javaFileList) -> validation2.apply(
+                                                                (
+                                                                        final List<Exception> exceptionListInner) -> fExceptionList.apply(exceptionListInner),
+                                                                (
+                                                                        final List<JavaFile> javaFileListInner) -> fJavaFileList.apply(concat(javaFileList.stream(), javaFileListInner.stream()).collect(toList())))));
     }
 
     private static Stream<Exception> writeTo(
-            final File file,
+            final File directory,
             final JavaFile javaFile)
     {
         try
         {
-            javaFile.writeTo(file);
+            javaFile.writeTo(directory);
             return empty();
         }
         catch (final IOException ioException)
@@ -151,9 +155,12 @@ public final class JavaPoetMojo extends AbstractMojo
 
         return JavaPoetMojo.<List<Exception>>directoryFor(path).apply(
                 identity(),
-                directory -> JavaPoetMojo.<List<Exception>>javaFileStreamListFor(classNameMethodNameParameterMap).apply(
-                        identity(),
-                        javaFileList -> javaFileList.stream().flatMap(javaFile -> writeTo(directory, javaFile)).collect(toList())));
+                (
+                        File directory) -> JavaPoetMojo.<List<Exception>>javaFileStreamListFor(classNameMethodNameParameterMap).apply(
+                                identity(),
+                                (
+                                        List<JavaFile> javaFileList) -> javaFileList.stream().flatMap((
+                                                JavaFile javaFile) -> writeTo(directory, javaFile)).collect(toList())));
     }
 
     /**
@@ -174,6 +181,7 @@ public final class JavaPoetMojo extends AbstractMojo
     @Override
     public void execute()
     {
-        executeHelper(path, methods).forEach(exception -> getLog().error(exception));
+        executeHelper(path, methods).forEach((
+                Exception exception) -> getLog().error(exception));
     }
 }
